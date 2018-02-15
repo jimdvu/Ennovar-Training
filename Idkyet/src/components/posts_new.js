@@ -1,12 +1,16 @@
 import React, { Component } from 'react';
 import { Field, reduxForm } from 'redux-form';
 import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { createPost } from '../actions';
 
 class PostsNew extends Component {
   renderField(field){
-  const { meta: {touched, error} } = field;
-  const className = `form-group ${touched && error ? 'has danger' : '' }`;
-    return(
+    const { meta: {touched, error} } = field;
+    const className = `form-group ${touched && error ? 'has-danger' : '' } `;
+
+    return
+    (
       <div className={className}>
         <label>{field.label}</label>
         <input
@@ -14,13 +18,17 @@ class PostsNew extends Component {
           type="text"
           {...field.input}
         />
-        { touched ? error: ""}
+        <div className="text-help">
+          { touched ? error : ''}
+        </div>
       </div>
     );
   }
 
   onSubmit(values){
-    console.log(values);
+    this.props.createPost(values, () => {
+    this.props.history.push('/')
+    });
   }
 
   render(){
@@ -52,8 +60,7 @@ class PostsNew extends Component {
 //values is an object that contains the value of objects user has
 //entered into a form
 function validate(values){
-  const errors = {}
-
+  const errors  = { };
   //validate the inputs from 'values'
   if(!values.title){
     errors.title = "Enter a title!";
@@ -72,4 +79,6 @@ function validate(values){
 export default reduxForm({
   validate,
   form: 'PostsNewForm'
-})(PostsNew);
+})(
+  connect(null, { createPost })(PostsNew)
+)
