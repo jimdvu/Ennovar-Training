@@ -9,8 +9,7 @@ class PostsNew extends Component {
     const { meta: {touched, error} } = field;
     const className = `form-group ${touched && error ? 'has-danger' : '' } `;
 
-    return
-    (
+    return (
       <div className={className}>
         <label>{field.label}</label>
         <input
@@ -33,7 +32,6 @@ class PostsNew extends Component {
 
   render(){
     const { handleSubmit } =  this.props;
-
     return (
       <form onSubmit={handleSubmit(this.onSubmit.bind(this))}>
         <Field
